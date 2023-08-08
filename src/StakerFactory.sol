@@ -1,0 +1,120 @@
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.15;
+
+import "./Staker.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+
+// import {ICrossDomainMessenger} from "@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol";
+
+contract StakerFactory {
+    event StakerDeployed(address);
+    event StakerRegistered(
+        address indexed StakerFactory,
+        uint256 tokenId,
+        uint256 totalSupply,
+        string name,
+        address owner
+    );
+    address crossDomainMessengerAddr =
+        0x5086d1eEF304eb5284A0f6720f79403b4e9bE294;
+    address greeterL2Addr = 0xE8B462EEF7Cbd4C855Ea4B65De65a5c5Bab650A9;
+
+    function deployStaker(
+        ERC721 _NFTAddr,
+        uint256 _tokenId,
+        uint256 _totalSupply,
+        bytes32 salt
+    ) public {
+        address computedAddress = computeStakerAddress(
+            type(Staker).creationCode,
+            address(this),
+            _NFTAddr,
+            _tokenId,
+            _totalSupply,
+            _NFTAddr.ownerOf(_tokenId),
+            uint256(salt)
+        );
+
+        Staker staker = new Staker{salt: salt}(
+            _NFTAddr,
+            _tokenId,
+            _totalSupply,
+            _NFTAddr.ownerOf(_tokenId)
+        );
+        sendMetaData(
+            _tokenId,
+            _totalSupply,
+            _NFTAddr.name(),
+            _NFTAddr.symbol(),
+            _NFTAddr.ownerOf(_tokenId),
+            _NFTAddr
+        );
+
+        require(
+            address(staker) == computedAddress,
+            "Computed address mismatch"
+        );
+        emit StakerDeployed(address(staker));
+    }
+
+    function computeStakerAddress(
+        bytes memory byteCode,
+        address _deployer,
+        ERC721 _NFTAddr,
+        uint256 _tokenId,
+        uint256 _totalSupply,
+        address _Owner,
+        uint256 salt
+    ) public pure returns (address) {
+        address predictedAddress = address(
+            uint160(
+                uint256(
+                    keccak256(
+                        abi.encodePacked(
+                            bytes1(0xff),
+                            _deployer,
+                            salt,
+                            keccak256(
+                                abi.encodePacked(
+                                    byteCode,
+                                    abi.encode(
+                                        _NFTAddr,
+                                        _tokenId,
+                                        _totalSupply,
+                                        _Owner
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        );
+        return predictedAddress;
+    }
+
+    function sendMetaData(
+        uint256 _tokenId,
+        uint256 _totalSupply,
+        string memory _name,
+        string memory _symbol,
+        address _Owner,
+        ERC721 _NFTAddr
+    ) internal {
+        bytes memory message;
+        message = abi.encodeWithSignature(
+            "registerMetadata(uint256,uint256,string,string,address,address)",
+            _tokenId,
+            _totalSupply,
+            _name,
+            _symbol,
+            _Owner,
+            address(_NFTAddr)
+        );
+        // ICrossDomainMessenger(crossDomainMessengerAddr).sendMessage(
+        //     greeterL2Addr,
+        //     message,
+        //     1000000
+        // );
+    }
+}

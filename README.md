@@ -1,6 +1,6 @@
 ## ArtStakes
 
-\*\*ArtStakes is a protocol seeking to empower NFT collectors and holders alike to do things that at first didn't seem possiable.
+ArtStakes is a protocol seeking to empower NFT collectors and holders alike to do things that at first didn't seem possiable.
 **Components**
 
 - **StakerFactory**: Contract that deploys a staker contract, here the user can deposit their erc721 on an L1 chain and select a type of token bridged over to corrosponding OP L2 chain(Optimism/Zora/Base/Mode), sends a message to ERC721XFactory through L1CrossdomainMessanger.

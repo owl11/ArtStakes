@@ -1,5 +1,6 @@
 # Ignore node_modules directory
-lib/node_modules/*
+/lib/*/node_modules/
+
 
 # Ignore compiled output
 /dist/

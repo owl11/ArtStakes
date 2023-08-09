@@ -2,7 +2,7 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import "../src/ERC20.sol";
+import "../src/ArtStakes_ERC20.sol";
 import "../src/mocks/mockERC721.sol";
 
 contract ERC20_OZ_deploy_Test is Test {

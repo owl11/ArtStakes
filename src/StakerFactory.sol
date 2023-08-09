@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.15;
 
-import "./Staker.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import {Staker} from "./Staker.sol";
+import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 import {ICrossDomainMessenger} from "@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol";
 
@@ -130,10 +130,10 @@ contract StakerFactory {
                 address(_NFTAddr)
             );
         }
-        ICrossDomainMessenger(crossDomainMessengerAddr).sendMessage(
-            greeterL2Addr,
-            message,
-            1000000
-        );
+        // ICrossDomainMessenger(crossDomainMessengerAddr).sendMessage(
+        //     greeterL2Addr,
+        //     message,
+        //     1000000
+        // );
     }
 }

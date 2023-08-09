@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "./cloned_ERC721.sol";
-import "./StakerFactory.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
+import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import {ERC721X} from "./ERC721X.sol";
+import {StakerFactory} from "./StakerFactory.sol";
+import {ICrossDomainMessenger} from "@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol";
 
 contract ERC721Factory {
     error NFTAlreadyDeployed();
@@ -157,6 +158,6 @@ contract ERC721Factory {
         if (msg.sender != cdmAddr) return address(0);
 
         // If it is a cross domain message, find out where it is from
-        // return ICrossDomainMessenger(cdmAddr).xDomainMessageSender();
+        return ICrossDomainMessenger(cdmAddr).xDomainMessageSender();
     } // getXorig()
 }

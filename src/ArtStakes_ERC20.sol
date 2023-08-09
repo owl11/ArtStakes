@@ -3,7 +3,7 @@ pragma solidity >=0.8.4;
 
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
+import {Pausable} from "@openzeppelin/contracts/security/Pausable.sol";
 
 contract ArtStakes_ERC20 is ERC20, Pausable, Ownable {
     constructor(

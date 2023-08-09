@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "./ERC20.sol";
-import "./StakerFactory.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
+import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import {ArtStakes_ERC20} from "./ArtStakes_ERC20.sol";
+import {StakerFactory} from "./StakerFactory.sol";
 
 contract ERC20Factory {
     event ERC20Deployed(address indexed erc20Address);

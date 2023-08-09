@@ -802,6 +802,47 @@
         }
       }
     },
+    "lib/node_modules/@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol": {
+      "lastModificationDate": 1691240806374,
+      "contentHash": "96f84d060c3ea745d1a2f7a71b796f4f",
+      "sourceName": "lib/node_modules/@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "useLiteralContent": false,
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {}
+        }
+      },
+      "imports": [],
+      "versionRequirement": ">0.5.0, <0.9.0",
+      "artifacts": {
+        "ICrossDomainMessenger": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "ICrossDomainMessenger.sol/ICrossDomainMessenger.json"
+        }
+      }
+    },
     "lib/openzeppelin-contracts/contracts/access/Ownable.sol": {
       "lastModificationDate": 1691545550207,
       "contentHash": "5a20b2cad87ddb61c7a3a6af21289e28",
@@ -1817,10 +1858,10 @@
         }
       }
     },
-    "src/ERC20.sol": {
-      "lastModificationDate": 1691545550237,
-      "contentHash": "97cf38e6d8c297404b979a782ac4245d",
-      "sourceName": "src/ERC20.sol",
+    "src/ArtStakes_ERC20.sol": {
+      "lastModificationDate": 1691590138118,
+      "contentHash": "0f8a0a3670298229e0b01c67701a735c",
+      "sourceName": "src/ArtStakes_ERC20.sol",
       "solcConfig": {
         "settings": {
           "optimizer": {
@@ -1861,13 +1902,13 @@
       "versionRequirement": ">=0.8.4",
       "artifacts": {
         "ArtStakes_ERC20": {
-          "0.8.20+commit.a1b79de6.Linux.gcc": "ERC20.sol/ArtStakes_ERC20.json"
+          "0.8.20+commit.a1b79de6.Linux.gcc": "ArtStakes_ERC20.sol/ArtStakes_ERC20.json"
         }
       }
     },
     "src/ERC20Factory.sol": {
-      "lastModificationDate": 1691555733927,
-      "contentHash": "de70fbb28b07315edc99b51a6c1f6cce",
+      "lastModificationDate": 1691590241638,
+      "contentHash": "b5cb51f2d6ad1e72e20ad7ecc1f14a68",
       "sourceName": "src/ERC20Factory.sol",
       "solcConfig": {
         "settings": {
@@ -1899,6 +1940,7 @@
         }
       },
       "imports": [
+        "lib/node_modules/@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol",
         "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
         "lib/openzeppelin-contracts/contracts/security/Pausable.sol",
         "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol",
@@ -1915,7 +1957,7 @@
         "lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol",
         "lib/openzeppelin-contracts/contracts/utils/math/Math.sol",
         "lib/openzeppelin-contracts/contracts/utils/math/SignedMath.sol",
-        "src/ERC20.sol",
+        "src/ArtStakes_ERC20.sol",
         "src/Staker.sol",
         "src/StakerFactory.sol"
       ],
@@ -1927,8 +1969,8 @@
       }
     },
     "src/ERC721Factory.sol": {
-      "lastModificationDate": 1691555325327,
-      "contentHash": "7c7787e4bf1f62f822b608134e769672",
+      "lastModificationDate": 1691590003908,
+      "contentHash": "a3b10a2c29b83f4fbd1e1c3577095ce3",
       "sourceName": "src/ERC721Factory.sol",
       "solcConfig": {
         "settings": {
@@ -1960,6 +2002,7 @@
         }
       },
       "imports": [
+        "lib/node_modules/@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol",
         "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
         "lib/openzeppelin-contracts/contracts/interfaces/IERC165.sol",
         "lib/openzeppelin-contracts/contracts/interfaces/IERC4906.sol",
@@ -1979,9 +2022,9 @@
         "lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol",
         "lib/openzeppelin-contracts/contracts/utils/math/Math.sol",
         "lib/openzeppelin-contracts/contracts/utils/math/SignedMath.sol",
+        "src/ERC721X.sol",
         "src/Staker.sol",
-        "src/StakerFactory.sol",
-        "src/cloned_ERC721.sol"
+        "src/StakerFactory.sol"
       ],
       "versionRequirement": "^0.8.4",
       "artifacts": {
@@ -1990,119 +2033,10 @@
         }
       }
     },
-    "src/Staker.sol": {
-      "lastModificationDate": 1691547986777,
-      "contentHash": "1d4c4e07925a3ce51011d9d9de2d8a25",
-      "sourceName": "src/Staker.sol",
-      "solcConfig": {
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "metadata": {
-            "useLiteralContent": false,
-            "bytecodeHash": "ipfs",
-            "appendCBOR": true
-          },
-          "outputSelection": {
-            "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
-            }
-          },
-          "evmVersion": "paris",
-          "libraries": {}
-        }
-      },
-      "imports": [
-        "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
-        "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol",
-        "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721Receiver.sol",
-        "lib/openzeppelin-contracts/contracts/token/ERC721/extensions/IERC721Metadata.sol",
-        "lib/openzeppelin-contracts/contracts/utils/Address.sol",
-        "lib/openzeppelin-contracts/contracts/utils/Context.sol",
-        "lib/openzeppelin-contracts/contracts/utils/Strings.sol",
-        "lib/openzeppelin-contracts/contracts/utils/introspection/ERC165.sol",
-        "lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol",
-        "lib/openzeppelin-contracts/contracts/utils/math/Math.sol",
-        "lib/openzeppelin-contracts/contracts/utils/math/SignedMath.sol"
-      ],
-      "versionRequirement": "^0.8.4",
-      "artifacts": {
-        "Staker": {
-          "0.8.20+commit.a1b79de6.Linux.gcc": "Staker.sol/Staker.json"
-        }
-      }
-    },
-    "src/StakerFactory.sol": {
-      "lastModificationDate": 1691555543647,
-      "contentHash": "7ffa90592fbf38745d3b40b83332201b",
-      "sourceName": "src/StakerFactory.sol",
-      "solcConfig": {
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "metadata": {
-            "useLiteralContent": false,
-            "bytecodeHash": "ipfs",
-            "appendCBOR": true
-          },
-          "outputSelection": {
-            "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
-            }
-          },
-          "evmVersion": "paris",
-          "libraries": {}
-        }
-      },
-      "imports": [
-        "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
-        "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol",
-        "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721Receiver.sol",
-        "lib/openzeppelin-contracts/contracts/token/ERC721/extensions/IERC721Metadata.sol",
-        "lib/openzeppelin-contracts/contracts/utils/Address.sol",
-        "lib/openzeppelin-contracts/contracts/utils/Context.sol",
-        "lib/openzeppelin-contracts/contracts/utils/Strings.sol",
-        "lib/openzeppelin-contracts/contracts/utils/introspection/ERC165.sol",
-        "lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol",
-        "lib/openzeppelin-contracts/contracts/utils/math/Math.sol",
-        "lib/openzeppelin-contracts/contracts/utils/math/SignedMath.sol",
-        "src/Staker.sol"
-      ],
-      "versionRequirement": "^0.8.15",
-      "artifacts": {
-        "StakerFactory": {
-          "0.8.20+commit.a1b79de6.Linux.gcc": "StakerFactory.sol/StakerFactory.json"
-        }
-      }
-    },
-    "src/cloned_ERC721.sol": {
-      "lastModificationDate": 1691553530357,
-      "contentHash": "783b16710d427395794e5f23563dc5ae",
-      "sourceName": "src/cloned_ERC721.sol",
+    "src/ERC721X.sol": {
+      "lastModificationDate": 1691590050108,
+      "contentHash": "ca96714a7be0dc653deed8b40a5f0aa6",
+      "sourceName": "src/ERC721X.sol",
       "solcConfig": {
         "settings": {
           "optimizer": {
@@ -2156,7 +2090,117 @@
       "versionRequirement": "^0.8.9",
       "artifacts": {
         "ERC721X": {
-          "0.8.20+commit.a1b79de6.Linux.gcc": "cloned_ERC721.sol/ERC721X.json"
+          "0.8.20+commit.a1b79de6.Linux.gcc": "ERC721X.sol/ERC721X.json"
+        }
+      }
+    },
+    "src/Staker.sol": {
+      "lastModificationDate": 1691590111418,
+      "contentHash": "b08ed2b5b3c1697b62f104360d44c209",
+      "sourceName": "src/Staker.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "useLiteralContent": false,
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721Receiver.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC721/extensions/IERC721Metadata.sol",
+        "lib/openzeppelin-contracts/contracts/utils/Address.sol",
+        "lib/openzeppelin-contracts/contracts/utils/Context.sol",
+        "lib/openzeppelin-contracts/contracts/utils/Strings.sol",
+        "lib/openzeppelin-contracts/contracts/utils/introspection/ERC165.sol",
+        "lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol",
+        "lib/openzeppelin-contracts/contracts/utils/math/Math.sol",
+        "lib/openzeppelin-contracts/contracts/utils/math/SignedMath.sol"
+      ],
+      "versionRequirement": "^0.8.4",
+      "artifacts": {
+        "Staker": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "Staker.sol/Staker.json"
+        }
+      }
+    },
+    "src/StakerFactory.sol": {
+      "lastModificationDate": 1691592277408,
+      "contentHash": "536cb1de4bf29c18d19e4bd27f055530",
+      "sourceName": "src/StakerFactory.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "useLiteralContent": false,
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/node_modules/@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol",
+        "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721Receiver.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC721/extensions/IERC721Metadata.sol",
+        "lib/openzeppelin-contracts/contracts/utils/Address.sol",
+        "lib/openzeppelin-contracts/contracts/utils/Context.sol",
+        "lib/openzeppelin-contracts/contracts/utils/Strings.sol",
+        "lib/openzeppelin-contracts/contracts/utils/introspection/ERC165.sol",
+        "lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol",
+        "lib/openzeppelin-contracts/contracts/utils/math/Math.sol",
+        "lib/openzeppelin-contracts/contracts/utils/math/SignedMath.sol",
+        "src/Staker.sol"
+      ],
+      "versionRequirement": "^0.8.15",
+      "artifacts": {
+        "StakerFactory": {
+          "0.8.20+commit.a1b79de6.Linux.gcc": "StakerFactory.sol/StakerFactory.json"
         }
       }
     },
@@ -2216,8 +2260,8 @@
       }
     },
     "test/ERC20.t.sol": {
-      "lastModificationDate": 1691555811337,
-      "contentHash": "41ee26fca9f2b868f3ae392f150b0d8d",
+      "lastModificationDate": 1691590249368,
+      "contentHash": "8b5fab83ae36300ecfb8d047ebd51019",
       "sourceName": "test/ERC20.t.sol",
       "solcConfig": {
         "settings": {
@@ -2285,7 +2329,7 @@
         "lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol",
         "lib/openzeppelin-contracts/contracts/utils/math/Math.sol",
         "lib/openzeppelin-contracts/contracts/utils/math/SignedMath.sol",
-        "src/ERC20.sol",
+        "src/ArtStakes_ERC20.sol",
         "src/mocks/mockERC721.sol"
       ],
       "versionRequirement": "^0.8.13",
@@ -2347,6 +2391,7 @@
         "lib/forge-std/src/console2.sol",
         "lib/forge-std/src/interfaces/IMulticall3.sol",
         "lib/forge-std/src/safeconsole.sol",
+        "lib/node_modules/@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol",
         "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
         "lib/openzeppelin-contracts/contracts/security/Pausable.sol",
         "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol",
@@ -2365,7 +2410,7 @@
         "lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol",
         "lib/openzeppelin-contracts/contracts/utils/math/Math.sol",
         "lib/openzeppelin-contracts/contracts/utils/math/SignedMath.sol",
-        "src/ERC20.sol",
+        "src/ArtStakes_ERC20.sol",
         "src/ERC20Factory.sol",
         "src/Staker.sol",
         "src/StakerFactory.sol",
@@ -2379,8 +2424,8 @@
       }
     },
     "test/ERC721Factory.t.sol": {
-      "lastModificationDate": 1691555751957,
-      "contentHash": "1a30fac36d5a918e32536a27816a430d",
+      "lastModificationDate": 1691590304758,
+      "contentHash": "d8bfaf37c33ceb8bcae1405328b4a3e7",
       "sourceName": "test/ERC721Factory.t.sol",
       "solcConfig": {
         "settings": {
@@ -2430,6 +2475,7 @@
         "lib/forge-std/src/console2.sol",
         "lib/forge-std/src/interfaces/IMulticall3.sol",
         "lib/forge-std/src/safeconsole.sol",
+        "lib/node_modules/@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol",
         "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
         "lib/openzeppelin-contracts/contracts/interfaces/IERC165.sol",
         "lib/openzeppelin-contracts/contracts/interfaces/IERC4906.sol",
@@ -2450,9 +2496,9 @@
         "lib/openzeppelin-contracts/contracts/utils/math/Math.sol",
         "lib/openzeppelin-contracts/contracts/utils/math/SignedMath.sol",
         "src/ERC721Factory.sol",
+        "src/ERC721X.sol",
         "src/Staker.sol",
         "src/StakerFactory.sol",
-        "src/cloned_ERC721.sol",
         "src/mocks/mockERC721.sol"
       ],
       "versionRequirement": "^0.8.13",
@@ -2539,8 +2585,8 @@
       }
     },
     "test/StakerFactory.t.sol": {
-      "lastModificationDate": 1691546681167,
-      "contentHash": "a04b5219700ea98d310e892efae2c58e",
+      "lastModificationDate": 1691590387148,
+      "contentHash": "1dfdb16e1f95e6059ea795dca6a0e987",
       "sourceName": "test/StakerFactory.t.sol",
       "solcConfig": {
         "settings": {
@@ -2590,6 +2636,7 @@
         "lib/forge-std/src/console2.sol",
         "lib/forge-std/src/interfaces/IMulticall3.sol",
         "lib/forge-std/src/safeconsole.sol",
+        "lib/node_modules/@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol",
         "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
         "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol",

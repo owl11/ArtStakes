@@ -2,7 +2,6 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-// import "../src/Staker.sol";
 import "../src/StakerFactory.sol";
 import "../src/mocks/mockERC721.sol";
 

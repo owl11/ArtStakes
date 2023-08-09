@@ -2579,8 +2579,8 @@
       }
     },
     "test/StakerFactory.t.sol": {
-      "lastModificationDate": 1691590387148,
-      "contentHash": "1dfdb16e1f95e6059ea795dca6a0e987",
+      "lastModificationDate": 1691603142223,
+      "contentHash": "9ed42d609aa70454e87f4a8daaaebec0",
       "sourceName": "test/StakerFactory.t.sol",
       "solcConfig": {
         "settings": {

@@ -1,6 +1,8 @@
 # Ignore node_modules directory
 /node_modules/*
-
+/lib/*
+!/lib/**/
+!/lib/**/package.json
 # Ignore compiled output
 /dist/
 /out/

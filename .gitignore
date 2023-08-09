@@ -1,12 +1,11 @@
 # Ignore node_modules directory
 /node_modules/*
 
-# Ignore lib directory contents
+# Ignore everything in lib directory
 /lib/*
-!/lib/**/
 
-# Include lib/package.json files
-!/lib/**/package.json
+# Include only lib/package.json
+!/lib/package.json
 # Ignore compiled output
 /dist/
 /out/

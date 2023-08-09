@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 // import {ICrossDomainMessenger} from "@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol";
 
 contract StakerFactory {
+    error address_Missmatch();
     event StakerDeployed(address);
     event StakerRegistered(
         address indexed StakerFactory,
@@ -23,7 +24,8 @@ contract StakerFactory {
         ERC721 _NFTAddr,
         uint256 _tokenId,
         uint256 _totalSupply,
-        bytes32 salt
+        bytes32 salt,
+        uint256 _type
     ) public {
         address computedAddress = computeStakerAddress(
             type(Staker).creationCode,
@@ -44,16 +46,17 @@ contract StakerFactory {
         sendMetaData(
             _tokenId,
             _totalSupply,
+            _type,
             _NFTAddr.name(),
             _NFTAddr.symbol(),
+            _NFTAddr.tokenURI(_tokenId),
             _NFTAddr.ownerOf(_tokenId),
             _NFTAddr
         );
 
-        require(
-            address(staker) == computedAddress,
-            "Computed address mismatch"
-        );
+        if (address(staker) != computedAddress) {
+            revert address_Missmatch();
+        }
         emit StakerDeployed(address(staker));
     }
 
@@ -96,21 +99,36 @@ contract StakerFactory {
     function sendMetaData(
         uint256 _tokenId,
         uint256 _totalSupply,
+        uint256 _type,
         string memory _name,
         string memory _symbol,
+        string memory _uri,
         address _Owner,
         ERC721 _NFTAddr
     ) internal {
-        bytes memory message;
-        message = abi.encodeWithSignature(
-            "registerMetadata(uint256,uint256,string,string,address,address)",
-            _tokenId,
-            _totalSupply,
-            _name,
-            _symbol,
-            _Owner,
-            address(_NFTAddr)
-        );
+        if (_type == 0) {
+            bytes memory message; //Assign ERC721-COMPATIBLE METADATA
+            message = abi.encodeWithSignature(
+                "registerMetadata(uint256,uint256,string,string,string,address,address)",
+                _tokenId,
+                _name,
+                _symbol,
+                _uri,
+                _Owner,
+                address(_NFTAddr)
+            );
+        } else if (_type == 1) {
+            bytes memory message; //Assign ERC20-COMPAITBLE METADATA
+            message = abi.encodeWithSignature(
+                "registerMetadata(uint256,uint256,string,string,address,address)",
+                _tokenId,
+                _totalSupply,
+                _name,
+                _symbol,
+                _Owner,
+                address(_NFTAddr)
+            );
+        }
         // ICrossDomainMessenger(crossDomainMessengerAddr).sendMessage(
         //     greeterL2Addr,
         //     message,

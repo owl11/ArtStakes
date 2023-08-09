@@ -47,6 +47,6 @@ contract ERC20_OZ_deploy_Test is Test {
         vm.prank(_owner);
         erc20.transfer(address(0x69), 1 ether);
         console.log(erc20.balanceOf(_owner));
-        // assertEq(erc20.balanceOf(address(0x69)), 1 ether);
+        assertEq(erc20.balanceOf(address(0x69)), 1 ether);
     }
 }

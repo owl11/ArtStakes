@@ -13,10 +13,6 @@ contract ERC20Factory {
     using Strings for uint256;
     ERC721 public nftContract; // Define NFT contract interface
 
-    // mapping(address => mapping(address => mapping(uint256 => uint256)))
-    //     public stakerTotalSupply;
-    // mapping(address => mapping(address => mapping(uint256 => string)))
-    //     public stakerNames;
     struct StakerMetadata {
         uint256 tokenId;
         uint256 totalSupply;

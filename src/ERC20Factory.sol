@@ -5,7 +5,6 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {ArtStakes_ERC20} from "./ArtStakes_ERC20.sol";
-import {StakerFactory} from "./StakerFactory.sol";
 
 contract ERC20Factory {
     event ERC20Deployed(address indexed erc20Address);

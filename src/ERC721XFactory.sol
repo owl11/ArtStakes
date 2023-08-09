@@ -9,7 +9,7 @@ import {StakerFactory} from "./StakerFactory.sol";
 import {ICrossDomainMessenger} from "@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol";
 
 contract ERC721Factory {
-    error NFTAlreadyDeployed();
+    error xNFT_AlreadyDeployed();
     event ERC721Deployed(address indexed erc20Address);
     event ERC721Permitted(address indexed nftContract);
     using Strings for uint256;
@@ -30,7 +30,8 @@ contract ERC721Factory {
     //   mapping(address => bool) public hasMetadata;
 
     mapping(address => StakerMetadata) public stakerMetadata;
-    mapping(address => bool) public L2NftDeployed;
+    mapping(address => bool) public L1NftDeployed;
+    mapping(address => mapping(uint256 => bool)) public mintedTokens;
 
     address public owner;
 
@@ -46,12 +47,25 @@ contract ERC721Factory {
 
     function mint(ERC721X _erc721) public returns (bool) {
         StakerMetadata memory metadata = stakerMetadata[msg.sender];
+        require(
+            L1NftDeployed[metadata.collectionAddress] = true,
+            "you must deploy l2 Nft First"
+        );
+        require(
+            !mintedTokens[metadata.collectionAddress][metadata.tokenId],
+            "Token ID already minted"
+        );
         _erc721.safeMint(msg.sender, metadata.uri);
+        mintedTokens[metadata.collectionAddress][metadata.tokenId] = true;
         return true;
     }
 
     function deployERC721L2Clone(bytes32 salt) public returns (ERC721X) {
         StakerMetadata memory metadata = stakerMetadata[msg.sender];
+        address collectionAddr = metadata.collectionAddress;
+        if (L1NftDeployed[collectionAddr]) {
+            revert xNFT_AlreadyDeployed();
+        }
 
         string memory tokenName = string(
             abi.encodePacked(
@@ -82,7 +96,7 @@ contract ERC721Factory {
         );
 
         emit ERC721Deployed(address(erc721));
-        L2NftDeployed[address(erc721)] = true;
+        L1NftDeployed[collectionAddr] = true;
         return erc721;
     }
 

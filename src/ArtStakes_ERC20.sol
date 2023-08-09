@@ -38,8 +38,7 @@ contract ArtStakes_ERC20 is ERC20, Pausable, Ownable {
         return balanceOf(address(this));
     }
 
-    function approveWithin() private returns (bool success) {
+    function approveWithin() private {
         _approve(address(this), owner(), totalSupply());
-        return true;
     }
 }

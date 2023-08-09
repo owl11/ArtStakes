@@ -1,19 +1,20 @@
-/node_modules/*
+# Ignore node_modules directory
+/node_modules/
 /libs/*
 
-# Foundry files
-out
-# Compiler files
-cache/
-out/
+# Ignore compiled output
+/dist/
+/out/
+/build/
 
-# Ignores development broadcast logs
-!/broadcast
-/broadcast/*/31337/
-/broadcast/**/dry-run/
-
-# Docs
-docs/
-
-# Dotenv file
+# Ignore environment-specific files
 .env
+.env.local
+.env.*.local
+
+# Ignore package-lock.json (use npm-shrinkwrap.json instead)
+package-lock.json
+
+# Ignore logs and temp files
+*.log
+*.tmp

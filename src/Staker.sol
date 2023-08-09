@@ -20,8 +20,6 @@ contract Staker is IERC721Receiver, Ownable {
         uint256 _totalSupply,
         address _Owner
     ) {
-        // if (address(_NFTAddr) == address(0)) revert address__zero();
-        // if (address(owner) == address(0)) revert address__zero();
         nftAddress = _NFTAddr;
         expectedTokenId = _tokenId;
         totalSupply = _totalSupply;
@@ -37,7 +35,6 @@ contract Staker is IERC721Receiver, Ownable {
             expectedTokenId
         );
 
-        // Update the staked status
         staked = true;
     }
 

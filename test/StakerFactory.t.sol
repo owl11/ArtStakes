@@ -24,7 +24,7 @@ contract StakerFactoryTest is Test {
     }
 
     function testDeployStaker() public {
-        factory.deployStaker(erc721, tokenId, totalSupply, SALT1);
+        factory.deployStaker(erc721, tokenId, totalSupply, SALT1, 1);
     }
 
     function testComputedAddressEqualsDeployedAddress() public {

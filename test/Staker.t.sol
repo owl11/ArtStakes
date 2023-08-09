@@ -48,7 +48,6 @@ contract StakerTest is Test {
         erc721.approve(address(staker), 2);
         // vm.expectRevert(staker);
         staker.stake();
-        // assertEq(staker.staked(), true);
         vm.stopPrank();
     }
 

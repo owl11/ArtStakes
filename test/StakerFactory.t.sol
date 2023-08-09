@@ -37,7 +37,6 @@ contract StakerFactoryTest is Test {
             randomOwner,
             uint256(SALT1)
         );
-        // ERC20Mock(address(i_tokenContract)).mint(computedAddress, PRICE);
         vm.startPrank(address(factory));
         Staker staker = new Staker{salt: SALT1}(
             erc721,

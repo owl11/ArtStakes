@@ -4,7 +4,7 @@ pragma solidity ^0.8.15;
 import "./Staker.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-// import {ICrossDomainMessenger} from "@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol";
+import {ICrossDomainMessenger} from "@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol";
 
 contract StakerFactory {
     error address_Missmatch();
@@ -106,8 +106,9 @@ contract StakerFactory {
         address _Owner,
         ERC721 _NFTAddr
     ) internal {
+        bytes memory message;
         if (_type == 0) {
-            bytes memory message; //Assign ERC721-COMPATIBLE METADATA
+            //Assign ERC721-COMPATIBLE METADATA
             message = abi.encodeWithSignature(
                 "registerMetadata(uint256,uint256,string,string,string,address,address)",
                 _tokenId,
@@ -118,7 +119,7 @@ contract StakerFactory {
                 address(_NFTAddr)
             );
         } else if (_type == 1) {
-            bytes memory message; //Assign ERC20-COMPAITBLE METADATA
+            //Assign ERC20-COMPAITBLE METADATA
             message = abi.encodeWithSignature(
                 "registerMetadata(uint256,uint256,string,string,address,address)",
                 _tokenId,
@@ -129,10 +130,10 @@ contract StakerFactory {
                 address(_NFTAddr)
             );
         }
-        // ICrossDomainMessenger(crossDomainMessengerAddr).sendMessage(
-        //     greeterL2Addr,
-        //     message,
-        //     1000000
-        // );
+        ICrossDomainMessenger(crossDomainMessengerAddr).sendMessage(
+            greeterL2Addr,
+            message,
+            1000000
+        );
     }
 }

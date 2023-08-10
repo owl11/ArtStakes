@@ -19,19 +19,8 @@ contract ERC721FactoryTest is Test {
         erc721 = new Mock_ERC721();
         erc721.mint(randomOwner, 1);
         vm.prank(randomOwner);
-        factory = new ERC721Factory(randomOwner);
+        factory = new ERC721Factory();
     }
-
-    // function testDeployERC721() public {
-    //     vm.prank(randomOwner);
-    //     factory.deployERC721_L2Clone(
-    //         SALT1,
-    //         tokenId,
-    //         erc721.name(),
-    //         erc721.symbol(),
-    //         address(erc721)
-    //     );
-    // }
 
     function testDeployERC721() public returns (ERC721X) {
         vm.prank(randomOwner);
@@ -48,6 +37,7 @@ contract ERC721FactoryTest is Test {
     }
 
     function testComputedAddressEqualsDeployedAddress() public {
+        vm.startPrank(address(factory));
         address computedAddress = factory.computeERC721TokenAddress(
             type(ERC721X).creationCode,
             address(factory),
@@ -55,11 +45,11 @@ contract ERC721FactoryTest is Test {
             erc721.symbol(),
             uint256(SALT1)
         );
-        vm.startPrank(address(factory));
+
         ERC721X erc721x = new ERC721X{salt: SALT1}(
             erc721.name(),
             erc721.symbol(),
-            randomOwner
+            address(factory)
         );
         vm.stopPrank();
         assertEq(computedAddress, address(erc721x));

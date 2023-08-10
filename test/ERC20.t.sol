@@ -2,7 +2,7 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import "../src/ArtStakes_ERC20.sol";
+import "../src/AS_ERC20.sol";
 import "../src/mocks/mockERC721.sol";
 
 contract ERC20_OZ_deploy_Test is Test {
@@ -10,10 +10,10 @@ contract ERC20_OZ_deploy_Test is Test {
     string public _symbol = "MAST";
     uint256 public _totalSupply = 100 ether;
     address public _owner = address(0x1);
-    ArtStakes_ERC20 public erc20;
+    AS_ERC20 public erc20;
 
     function setUp() public {
-        erc20 = new ArtStakes_ERC20(_name, _symbol, _totalSupply, _owner);
+        erc20 = new AS_ERC20(_name, _symbol, _totalSupply, _owner);
     }
 
     function testClaim() public {

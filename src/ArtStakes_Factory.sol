@@ -49,14 +49,14 @@ contract ArtStakes_Factory {
 
     function mint(ERC721X _erc721, address _to) public returns (bool) {
         StakerMetadata memory metadata = stakerMetadata[msg.sender];
-        // require(
-        //     L1NftCloneDeployed[metadata.collectionAddress] = true,
-        //     "you must deploy l2 Nft First"
-        // );
-        // require(
-        //     !mintedTokens[metadata.collectionAddress][metadata.tokenId],
-        //     "Token ID already minted"
-        // );
+        require(
+            L1NftCloneDeployed[metadata.collectionAddress] = true,
+            "you must deploy l2 Nft First"
+        );
+        require(
+            !mintedTokens[metadata.collectionAddress][metadata.tokenId],
+            "Token ID already minted"
+        );
         _erc721.safeMint(_to, metadata.uri);
         mintedTokens[metadata.collectionAddress][metadata.tokenId];
         return true;

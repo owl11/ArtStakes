@@ -18,7 +18,8 @@ contract StakerFactory {
     );
     address crossDomainMessengerAddr =
         0x5086d1eEF304eb5284A0f6720f79403b4e9bE294;
-    address greeterL2Addr = 0xE8B462EEF7Cbd4C855Ea4B65De65a5c5Bab650A9;
+    address ERC20l2Factory;
+    address ERC721XL2Factory;
 
     function deployStaker(
         ERC721 _NFTAddr,
@@ -107,33 +108,22 @@ contract StakerFactory {
         ERC721 _NFTAddr
     ) internal {
         bytes memory message;
-        if (_type == 0) {
-            //Assign ERC721-COMPATIBLE METADATA
-            message = abi.encodeWithSignature(
-                "registerMetadata(uint256,uint256,string,string,string,address,address)",
-                _tokenId,
-                _name,
-                _symbol,
-                _uri,
-                _Owner,
-                address(_NFTAddr)
-            );
-        } else if (_type == 1) {
-            //Assign ERC20-COMPAITBLE METADATA
-            message = abi.encodeWithSignature(
-                "registerMetadata(uint256,uint256,string,string,address,address)",
-                _tokenId,
-                _totalSupply,
-                _name,
-                _symbol,
-                _Owner,
-                address(_NFTAddr)
-            );
-        }
-        // ICrossDomainMessenger(crossDomainMessengerAddr).sendMessage(
-        //     greeterL2Addr,
-        //     message,
-        //     1000000
-        // );
+        //Assign ERC721-COMPATIBLE METADATA
+        message = abi.encodeWithSignature(
+            "registerMetadata(uint256,uint256,uint256,uint256,string,string,string,address,address)",
+            _tokenId,
+            _totalSupply,
+            _type,
+            _name,
+            _symbol,
+            _uri,
+            _Owner,
+            address(_NFTAddr)
+        );
     }
+    // ICrossDomainMessenger(crossDomainMessengerAddr).sendMessage(
+    //     greeterL2Addr,
+    //     message,
+    //     1000000
+    // );
 }

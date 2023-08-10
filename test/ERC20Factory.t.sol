@@ -21,79 +21,84 @@ contract ERC20FactoryTest is Test {
         factory = new ERC20Factory();
     }
 
-    function testRegisterMetadataAndDeployERC20() public DeployedMetadata {
+    function testRegisteredMetadataAndDeployERC20() public {
         vm.prank(randomOwner);
-        factory.deployERC20(SALT1);
-        // Retrieve and assert struct values from logs
-        (
-            ,
-            uint256 _totalSupply,
-            string memory name,
-            string memory symbol,
-            address owner,
-            address collectionAddr
-        ) = factory.stakerMetadata(randomOwner);
-
-        console.log(tokenId);
-        assertEq(_totalSupply, totalSupply);
-
-        console.log(name);
-        console.log(symbol);
-        assertEq(owner, randomOwner);
-        assertEq(collectionAddr, address(erc721));
-    }
-
-    modifier DeployedMetadata() {
-        factory.registerMetadata(
-            tokenId,
-            totalSupply,
+        factory.deployERC20(
+            SALT1,
             erc721.name(),
             erc721.symbol(),
-            randomOwner,
-            address(erc721)
+            totalSupply,
+            randomOwner
         );
-        _;
+        //     // Retrieve and assert struct values from logs
+        //     (
+        //         ,
+        //         uint256 _totalSupply,
+        //         string memory name,
+        //         string memory symbol,
+        //         address owner,
+        //         address collectionAddr
+        //     ) = factory.stakerMetadata(randomOwner);
+
+        //     console.log(tokenId);
+        //     assertEq(_totalSupply, totalSupply);
+
+        //     console.log(name);
+        //     console.log(symbol);
+        //     assertEq(owner, randomOwner);
+        //     assertEq(collectionAddr, address(erc721));
     }
 
-    function testDeployERC20()
-        public
-        DeployedMetadata
-        returns (ArtStakes_ERC20)
-    {
+    // modifier DeployedMetadata() {
+    //     factory.registerMetadata(
+    //         tokenId,
+    //         totalSupply,
+    //         erc721.name(),
+    //         erc721.symbol(),
+    //         randomOwner,
+    //         address(erc721)
+    //     );
+    //     _;
+    // }
+
+    function testDeployERC20() public returns (AS_ERC20) {
         vm.prank(randomOwner);
-        ArtStakes_ERC20 erc20 = factory.deployERC20(SALT1);
+        AS_ERC20 erc20 = factory.deployERC20(
+            SALT1,
+            erc721.name(),
+            erc721.symbol(),
+            totalSupply,
+            randomOwner
+        );
         console.log(erc20.name());
         console.log(erc20.symbol());
         return erc20;
     }
 
-    function testComputedAddressEqualsDeployedAddress()
-        public
-        DeployedMetadata
-    {
-        (
-            ,
-            ,
-            string memory name,
-            string memory symbol,
-            address owner,
+    function testComputedAddressEqualsDeployedAddress() public {
+        // (
+        //     ,
+        //     ,
+        //     string memory name,
+        //     string memory symbol,
+        //     address owner,
 
-        ) = factory.stakerMetadata(randomOwner);
+        // ) = factory.stakerMetadata(randomOwner);
         address computedAddress = factory.computeTokenAddress(
-            type(ArtStakes_ERC20).creationCode,
+            type(AS_ERC20).creationCode,
             address(factory),
-            name,
-            symbol,
+            erc721.name(),
+            erc721.symbol(),
             uint256(SALT1),
             totalSupply,
             randomOwner
         );
         vm.startPrank(address(factory));
-        ArtStakes_ERC20 erc20 = new ArtStakes_ERC20{salt: SALT1}(
-            name,
-            symbol,
+        AS_ERC20 erc20 = new AS_ERC20{salt: SALT1}(
+            erc721.name(),
+            erc721.symbol(),
             totalSupply,
-            owner
+            randomOwner
         );
         vm.stopPrank();
         assertEq(computedAddress, address(erc20));

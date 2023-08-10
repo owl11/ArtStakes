@@ -4,7 +4,7 @@ pragma solidity ^0.8.4;
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import {ArtStakes_ERC20} from "./ArtStakes_ERC20.sol";
+import {AS_ERC20} from "./AS_ERC20.sol";
 
 contract ERC20Factory {
     event ERC20Deployed(address indexed erc20Address);
@@ -12,45 +12,29 @@ contract ERC20Factory {
     using Strings for uint256;
     ERC721 public nftContract; // Define NFT contract interface
 
-    struct StakerMetadata {
-        uint256 tokenId;
-        uint256 totalSupply;
-        string name;
-        string symbol;
-        address owner;
-        address collectionAddress;
-    }
-    mapping(address => StakerMetadata) public stakerMetadata;
     address public owner;
 
-    function deployERC20(bytes32 salt) public returns (ArtStakes_ERC20) {
-        StakerMetadata memory metadata = stakerMetadata[msg.sender];
-        require(metadata.tokenId != 0, "metadata not registered");
-        // string memory tokenId = toString(metadata.tokenId);
-        string memory tokenName = string(
-            abi.encodePacked(
-                "ArtStakes ERC20: ",
-                metadata.name,
-                "-",
-                metadata.tokenId.toString() // Use the toString function from Strings library
-            )
-        );
-        string memory symbol = string(abi.encodePacked("AS-", metadata.symbol));
-
+    function deployERC20(
+        bytes32 _salt,
+        string memory _tokenName,
+        string memory _symbol,
+        uint256 _totalSupply,
+        address _owner
+    ) public returns (AS_ERC20) {
         address computedAddress = computeTokenAddress(
-            type(ArtStakes_ERC20).creationCode,
+            type(AS_ERC20).creationCode,
             address(this),
-            tokenName,
-            symbol,
-            uint256(salt),
-            metadata.totalSupply,
-            metadata.owner
+            _tokenName,
+            _symbol,
+            uint256(_salt),
+            _totalSupply,
+            _owner
         );
-        ArtStakes_ERC20 erc20 = new ArtStakes_ERC20{salt: salt}(
-            tokenName,
-            symbol,
-            metadata.totalSupply,
-            metadata.owner
+        AS_ERC20 erc20 = new AS_ERC20{salt: _salt}(
+            _tokenName,
+            _symbol,
+            _totalSupply,
+            _owner
         );
 
         require(address(erc20) == computedAddress, "Computed address mismatch");
@@ -94,23 +78,5 @@ contract ERC20Factory {
             )
         );
         return predictedAddress;
-    }
-
-    function registerMetadata(
-        uint256 _tokenId,
-        uint256 _totalSupply,
-        string memory _name,
-        string memory _symbol,
-        address _owner,
-        address _collectionAddress
-    ) public {
-        stakerMetadata[_owner] = StakerMetadata({
-            tokenId: _tokenId,
-            totalSupply: _totalSupply,
-            name: _name,
-            symbol: _symbol,
-            owner: _owner,
-            collectionAddress: _collectionAddress
-        });
     }
 }

@@ -6,6 +6,7 @@
 /dist/
 /out/
 /build/
+/cashe/
 
 # Ignore environment-specific files
 .env

@@ -17,7 +17,6 @@ contract deployXtokens is Script {
     address l1Collection = address(0x01);
 
     function run() public returns (AS_ERC20, ERC721X) {
-        vm.startBroadcast();
         erc20 = new AS_ERC20(
             name,
             symbol,
@@ -27,7 +26,7 @@ contract deployXtokens is Script {
             l1Collection
         );
         erc721x = new ERC721X(name, symbol, owner);
-        erc721x.safeMint(owner, uri);
+        // erc721x.safeMint(owner, uri);
         return (erc20, erc721x);
     }
 }

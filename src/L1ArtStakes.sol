@@ -2,10 +2,8 @@
 pragma solidity ^0.8.14;
 
 import {IERC721Receiver} from "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
-// import "@openzeppelin/contracts/access/Ownable.sol";
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-
-// import {ICrossDomainMessenger} from "@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol";
+import {ICrossDomainMessenger} from "@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol";
 
 contract ArtStakes_Staker {
     event StakerRegistered(
@@ -18,20 +16,20 @@ contract ArtStakes_Staker {
     event burnMetadata(
         address sender, // msg.sender
         address origin, // tx.origin
-        // address xorigin, // cross domain origin, if any
+        address xorigin, // cross domain origin, if any
         address user, // user address, if given
         bytes metadata // The greeting
     );
     event MetadataSet(
         address sender, // msg.sender
         address origin, // tx.origin
-        // address xorigin, // cross domain origin, if any
+        address xorigin, // cross domain origin, if any
         address user, // user address, if given
         bytes metadata // The greeting
     );
     address public crossDomainMessengerAddr =
         0x5086d1eEF304eb5284A0f6720f79403b4e9bE294;
-    // address public xorigin;
+    address public xorigin = 0x6322314cbc00EE1220E6eacdE5C0555296B14dF7;
 
     // ATTENTION, THIS CONTRACT ASSUMES ONLY ONE NFT PER USER IS DEPOSITED,
     // DO NOT DEPOSIT AONTHER NFT FROM THE SAME WALLET!!!!
@@ -43,10 +41,10 @@ contract ArtStakes_Staker {
         public unstakeRequests;
     mapping(address => bool) public registeredMetadata; // Mapping to track registered metadata
 
-    // modifier onlyApprovedAddressXOrigin() {
-    //     require(xorigin == getXorig(), "not expected xorigin");
-    //     _;
-    // }
+    modifier onlyApprovedAddressXOrigin() {
+        require(xorigin == getXorig(), "not expected xorigin");
+        _;
+    }
 
     function stakeNFT() public {
         _stakeNFT();
@@ -66,7 +64,7 @@ contract ArtStakes_Staker {
         _NFTAddr.safeTransferFrom(msg.sender, address(this), _tokenId);
     }
 
-    function unStakeNFT() public {
+    function BurnerunStakeNFT() public {
         (uint256 _tokenId, ERC721 _NFTAddr, address _owner) = getUnstakerMetada(
             msg.sender
         );
@@ -85,8 +83,22 @@ contract ArtStakes_Staker {
         _NFTAddr.safeTransferFrom(address(this), msg.sender, _tokenId);
     }
 
-    // onlyApprovedAddressXOrigin
-    function ReceiveMessage(bytes memory _encodedData) public {
+    function emergancyWithdrawNFTOwner() public {
+        require(
+            registeredMetadata[msg.sender] == true,
+            "Unregistered Metadata"
+        );
+        (uint256 _tokenId, , , , , , , ERC721 _NFTAddr) = getUserMetadata(
+            msg.sender
+        );
+        require(stakedTokens[_NFTAddr][_tokenId] == true, "Token not staked");
+        stakedTokens[_NFTAddr][_tokenId] = false;
+        _NFTAddr.safeTransferFrom(address(this), msg.sender, _tokenId);
+    }
+
+    function ReceiveMessage(
+        bytes memory _encodedData
+    ) public onlyApprovedAddressXOrigin {
         (
             uint256 _tokenId,
             address _collectionAddress,
@@ -97,7 +109,7 @@ contract ArtStakes_Staker {
         emit burnMetadata(
             msg.sender,
             tx.origin,
-            // getXorig(),
+            getXorig(),
             _owner,
             _encodedData
         );
@@ -240,36 +252,36 @@ contract ArtStakes_Staker {
             encodedData
         );
 
-        //     ICrossDomainMessenger(crossDomainMessengerAddr).sendMessage(
-        //         xorigin,
-        //         message,
-        //         1000000 // irrelevant here
-        //     );
-        //     emit MetadataSet(msg.sender, tx.origin, getXorig(), _user, message);
-        // }
+        ICrossDomainMessenger(crossDomainMessengerAddr).sendMessage(
+            xorigin,
+            message,
+            1000000 // irrelevant here
+        );
+        emit MetadataSet(msg.sender, tx.origin, getXorig(), _user, message);
+    }
 
-        // function getXorig() public view returns (address) {
-        //     // Get the cross domain messenger's address each time.
-        //     // This is less resource intensive than writing to storage.
-        //     address cdmAddr = address(0);
+    function getXorig() public view returns (address) {
+        // Get the cross domain messenger's address each time.
+        // This is less resource intensive than writing to storage.
+        address cdmAddr = address(0);
 
-        //     // Mainnet
-        //     if (block.chainid == 1)
-        //         cdmAddr = 0x25ace71c97B33Cc4729CF772ae268934F7ab5fA1;
+        // Mainnet
+        if (block.chainid == 1)
+            cdmAddr = 0x25ace71c97B33Cc4729CF772ae268934F7ab5fA1;
 
-        //     // Goerli
-        //     if (block.chainid == 5)
-        //         cdmAddr = 0x5086d1eEF304eb5284A0f6720f79403b4e9bE294;
+        // Goerli
+        if (block.chainid == 5)
+            cdmAddr = 0x5086d1eEF304eb5284A0f6720f79403b4e9bE294;
 
-        //     // L2 (same address on every network)
-        //     if (block.chainid == 10 || block.chainid == 420)
-        //         cdmAddr = 0x4200000000000000000000000000000000000007;
+        // L2 (same address on every network)
+        if (block.chainid == 10 || block.chainid == 420)
+            cdmAddr = 0x4200000000000000000000000000000000000007;
 
-        //     // If this isn't a cross domain message
-        //     if (msg.sender != cdmAddr) return address(0);
+        // If this isn't a cross domain message
+        if (msg.sender != cdmAddr) return address(0);
 
-        //     // If it is a cross domain message, find out where it is from
-        //     return ICrossDomainMessenger(cdmAddr).xDomainMessageSender();
+        // If it is a cross domain message, find out where it is from
+        return ICrossDomainMessenger(cdmAddr).xDomainMessageSender();
     } // getXorig()
 
     function onERC721Received(

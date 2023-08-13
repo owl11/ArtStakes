@@ -5,7 +5,7 @@ import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {ERC721X} from "./AS_ERC721X.sol";
 import {AS_ERC20} from "./AS_ERC20.sol";
-// import {ICrossDomainMessenger} from "@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol";
+import {ICrossDomainMessenger} from "@eth-optimism/contracts/libraries/bridge/ICrossDomainMessenger.sol";
 import "@openzeppelin/contracts/proxy/Clones.sol";
 
 contract ArtStakes_Factory {
@@ -16,14 +16,14 @@ contract ArtStakes_Factory {
     event burnMetadata(
         address sender, // msg.sender
         address origin, // tx.origin
-        // address xorigin, // cross domain origin, if any
+        address xorigin, // cross domain origin, if any
         address user, // user address, if given
         bytes metadata // The greeting
     );
     event MetadataSet(
         address sender, // msg.sender
         address origin, // tx.origin
-        // address xorigin, // cross domain origin, if any
+        address xorigin, // cross domain origin, if any
         address user, // user address, if given
         bytes metadata // The greeting
     );
@@ -31,7 +31,7 @@ contract ArtStakes_Factory {
     event ERC721Deployed(ERC721X indexed _L2NFTContract);
 
     address public L1NFTContract;
-    // address public xorigin;
+    address public xorigin;
     address public crossDomainMessengerAddr =
         0x4200000000000000000000000000000000000007;
     address public deployer;
@@ -62,14 +62,14 @@ contract ArtStakes_Factory {
         _;
     }
 
-    // modifier onlyApprovedAddressXOrigin() {
-    //     require(xorigin == getXorig(), "not permitted xchainMessanger");
-    //     _;
-    // }
+    modifier onlyApprovedAddressXOrigin() {
+        require(xorigin == getXorig(), "not permitted xchainMessanger");
+        _;
+    }
 
-    // function setXorigin(address _xorigin) public onlyDeployer {
-    //     xorigin = _xorigin;
-    // }
+    function setXorigin(address _xorigin) public onlyDeployer {
+        xorigin = _xorigin;
+    }
 
     function mintXNFT() public returns (bool) {
         require(hasMetadata[msg.sender], "no metadata registered");
@@ -156,13 +156,14 @@ contract ArtStakes_Factory {
         sendBurnerMetaDataX(msg.sender);
     }
 
-    // onlyApprovedAddressXOrigin
-    function registerMetadata(bytes memory _Data) public {
+    function registerMetadata(
+        bytes memory _Data
+    ) public onlyApprovedAddressXOrigin {
         bytes memory data = _Data;
         (, , , , , , address _owner, ) = getUserMetadata(data);
         userMetadata[_owner] = data;
         hasMetadata[_owner] = true;
-        // emit MetadataSet(msg.sender, tx.origin, getXorig(), _owner, data);
+        emit MetadataSet(msg.sender, tx.origin, getXorig(), _owner, data);
     }
 
     function deployCorrospondingToken() public returns (address) {
@@ -277,35 +278,35 @@ contract ArtStakes_Factory {
         bytes memory encodedData = burnerMetadata[_user];
         message = abi.encodeWithSignature("ReceiveMessage(bytes)", encodedData);
 
-        // ICrossDomainMessenger(crossDomainMessengerAddr).sendMessage(
-        // xorigin,
-        // message,
-        // 1000000
-        // );
-        // emit burnMetadata(msg.sender, tx.origin, getXorig(), _user, message);
+        ICrossDomainMessenger(crossDomainMessengerAddr).sendMessage(
+            xorigin,
+            message,
+            1000000
+        );
+        emit burnMetadata(msg.sender, tx.origin, getXorig(), _user, message);
     }
 
-    // function getXorig() private view returns (address) {
-    //     address cdmAddr = address(0);
+    function getXorig() private view returns (address) {
+        address cdmAddr = address(0);
 
-    //     // Mainnet
-    //     if (block.chainid == 1)
-    //         cdmAddr = 0x25ace71c97B33Cc4729CF772ae268934F7ab5fA1;
+        // Mainnet
+        if (block.chainid == 1)
+            cdmAddr = 0x25ace71c97B33Cc4729CF772ae268934F7ab5fA1;
 
-    //     // Goerli
-    //     if (block.chainid == 5)
-    //         cdmAddr = 0x5086d1eEF304eb5284A0f6720f79403b4e9bE294;
+        // Goerli
+        if (block.chainid == 5)
+            cdmAddr = 0x5086d1eEF304eb5284A0f6720f79403b4e9bE294;
 
-    //     // L2 (same address on every network)
-    //     if (block.chainid == 10 || block.chainid == 420)
-    //         cdmAddr = 0x4200000000000000000000000000000000000007;
+        // L2 (same address on every network)
+        if (block.chainid == 10 || block.chainid == 420)
+            cdmAddr = 0x4200000000000000000000000000000000000007;
 
-    //     // If this isn't a cross domain message
-    //     if (msg.sender != cdmAddr) return address(0);
+        // If this isn't a cross domain message
+        if (msg.sender != cdmAddr) return address(0);
 
-    //     // If it is a cross domain message, find out where it is from
-    //     return ICrossDomainMessenger(cdmAddr).xDomainMessageSender();
-    // }
+        // If it is a cross domain message, find out where it is from
+        return ICrossDomainMessenger(cdmAddr).xDomainMessageSender();
+    }
 
     function getUserMetadata(
         bytes memory _data

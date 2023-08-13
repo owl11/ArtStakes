@@ -12,9 +12,10 @@ contract deployArtStakes_Factory is Script {
     ERC721X public erc721_master;
 
     function run() public returns (ArtStakes_Factory) {
+        vm.startBroadcast();
+
         deployer = new deployXtokens();
         (erc20_master, erc721_master) = deployer.run();
-        vm.startBroadcast();
         factory = new ArtStakes_Factory(
             address(erc20_master),
             address(erc721_master)

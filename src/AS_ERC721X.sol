@@ -1,13 +1,20 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.14;
 
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {ERC721Enumerable} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import {ERC721URIStorage} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {Counters} from "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 
-contract ERC721X is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
+contract ERC721X is
+    ERC721,
+    ERC721Enumerable,
+    ERC721URIStorage,
+    Ownable,
+    Initializable
+{
     using Counters for Counters.Counter;
     address public factory;
     address public L1NftAddr;
@@ -18,22 +25,22 @@ contract ERC721X is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         string memory _symbol,
         address _factory
     ) ERC721(_name, _symbol) {
-        factory = _factory;
+        initialize(_factory);
     }
 
-    modifier onlyFactory() {
-        require(tx.origin != factory, "not factory");
-        _;
+    function initialize(address _Owner) public initializer {
+        factory = _Owner;
+        transferOwnership(factory);
     }
 
-    function setNftL1Address(address _L1NFTAddress) public onlyFactory {
+    function setNftL1Address(address _L1NFTAddress) public onlyOwner {
         L1NftAddr = _L1NFTAddress;
     }
 
     function safeMint(
         address to,
         string memory uri
-    ) public onlyFactory returns (uint256) {
+    ) public onlyOwner returns (uint256) {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
@@ -51,6 +58,10 @@ contract ERC721X is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         uint256 batchSize
     ) internal override(ERC721, ERC721Enumerable) {
         super._beforeTokenTransfer(from, to, tokenId, batchSize);
+    }
+
+    function burn(uint256 tokenId) public onlyOwner {
+        _burn(tokenId);
     }
 
     function _burn(

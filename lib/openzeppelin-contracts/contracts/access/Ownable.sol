@@ -32,7 +32,8 @@ abstract contract Ownable is Context {
     /**
      * @dev Throws if called by any account other than the owner.
      */
-    modifier onlyOwner() {
+    modifier onlyOwner() virtual {
+        //this is modified
         _checkOwner();
         _;
     }

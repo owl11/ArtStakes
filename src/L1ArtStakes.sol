@@ -64,7 +64,7 @@ contract ArtStakes_Staker {
         _NFTAddr.safeTransferFrom(msg.sender, address(this), _tokenId);
     }
 
-    function BurnerunStakeNFT() public {
+    function BurnerUNStakeNFT() public {
         (uint256 _tokenId, ERC721 _NFTAddr, address _owner) = getUnstakerMetada(
             msg.sender
         );

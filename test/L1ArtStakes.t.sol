@@ -120,7 +120,7 @@ contract StakerFactoryTest is Test {
         ReceivedMessage
     {
         vm.prank(address(0x99));
-        staker.unStakeNFT();
+        staker.BurnerUNStakeNFT();
     }
 
     function testunstakeType2()
@@ -130,7 +130,7 @@ contract StakerFactoryTest is Test {
         ReceivedMessage
     {
         vm.prank(address(0x99));
-        staker.unStakeNFT();
+        staker.BurnerUNStakeNFT();
     }
 
     function encodeBurnerMetadata(

@@ -1,6 +1,6 @@
 ## ArtStakes (WIP)
 
-ArtStakes is a protocol seeking to unlock usecases for NFT's to do things that at first didn't seem possible.
+ArtStakes is a protocol seeking to unlock usecases for NFT's
 
 **Components**
 

@@ -27,3 +27,20 @@ $ cd ..
 ```shell
 $ forge test
 ```
+
+
+### Audit details:
+
+##### Auditor
+
+- Asen (https://github.com/asendz) (@asen_sec)
+
+##### Notes
+
+All changes for MAIN until commit [62348787bd3099a564099e8f8779d124d389eaf6](https://github.com/owl11/ArtStakes/commit/62348787bd3099a564099e8f8779d124d389eaf6) have been audited and are considered in the audit report.
+
+mitigations: (pending)
+
+##### Links
+
+- [Audit Report 1.0.0](https://github.com/asendz/Portfolio/blob/main/Security%20Reports/ArtStakes.md)

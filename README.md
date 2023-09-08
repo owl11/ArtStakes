@@ -43,4 +43,4 @@ mitigations: (pending)
 
 ##### Links
 
-- [Audit Report 1.0.0]([https://github.com/asendz/Portfolio/blob/main/Security%20Reports/ArtStakes.md](https://github.com/asendz/Portfolio/blob/main/Security%20Reports/Private%20audits/ArtStakes.md)https://github.com/asendz/Portfolio/blob/main/Security%20Reports/Private%20audits/ArtStakes.md)
+- [Audit Report 1.0.0](https://github.com/asendz/Portfolio/blob/main/Security%20Reports/Private%20audits/ArtStakes.md)

@@ -1,4 +1,4 @@
-## ArtStakes (WIP)
+## ArtStakes (WIP) made in [ETHGlobal's Superhack](https://ethglobal.com/showcase/artstakes-m5jy1)
 
 ArtStakes is a protocol seeking to unlock usecases for NFT's
 
